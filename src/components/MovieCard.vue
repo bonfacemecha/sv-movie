@@ -1,6 +1,7 @@
 <template>
-  <div
-    class="movie-card shadow-md rounded-lg overflow-hidden bg-white hover:shadow-xl transition duration-300"
+   <router-link :to="`/movie/${movie.id}`" class="block">
+  <div 
+    class="cursor-pointer movie-card shadow-md rounded-lg overflow-hidden bg-white hover:shadow-xl transition duration-300"
   >
     <img
       :src="getPosterUrl(movie.poster_path)"
@@ -17,9 +18,19 @@
       </div>
     </div>
   </div>
+  </router-link>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+
+
+const goToDetail = (movieId) => {
+  router.push(`/movie/${movieId}`)
+}
+
 defineProps({
   movie: {
     type: Object,

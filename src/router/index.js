@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import MoviesView from '../views/MoviesView.vue'
+
+import MovieDetail from '@/views/MovieDetail.vue' // Create this component
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +13,13 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/movies',
+      name: 'movies',
+      component: MoviesView,
+    },
+    { path: '/movie/:id', name: 'MovieDetail', component: MovieDetail },
+
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -18,6 +28,10 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    // Always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router

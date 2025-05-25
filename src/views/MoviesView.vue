@@ -48,6 +48,46 @@ onMounted(() => {
     </div>
 
     <div v-else>
+  <!-- 📊 Stats at a Glance -->
+<div class="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <!-- Current Page -->
+  <div class="flex items-center bg-blue-50 border border-blue-200 rounded-lg p-4 shadow">
+    <div class="p-3 bg-blue-100 text-blue-600 rounded-full mr-4">
+      <i class="fa-solid fa-solar-panel"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Current Page</p>
+      <p class="text-lg font-semibold text-gray-800">{{ currentPage }}</p>
+    </div>
+  </div>
+
+  <!-- Total Pages -->
+  <div class="flex items-center bg-green-50 border border-green-200 rounded-lg p-4 shadow">
+    <div class="p-3 bg-green-100 text-green-600 rounded-full mr-4">
+      <i class="fa-solid fa-file-circle-plus"></i>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500">Total Pages</p>
+      <p class="text-lg font-semibold text-gray-800">{{ totalPages }}</p>
+    </div>
+  </div>
+
+  <!-- Movies This Page -->
+  <div class="flex items-center bg-yellow-50 border border-yellow-200 rounded-lg p-4 shadow">
+    <div class="p-3 bg-yellow-100 text-yellow-600 rounded-full mr-4">
+     <i class="fa-solid fa-video"></i>
+
+
+    </div>
+    
+    <div>
+      <p class="text-sm text-gray-500">Movies This Page</p>
+      <p class="text-lg font-semibold text-gray-800">{{ movies.length }}</p>
+    </div>
+  </div>
+</div>
+
+
       <h1 class="text-2xl font-bold mb-4">Popular Movies</h1>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie" />
