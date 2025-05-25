@@ -1,5 +1,7 @@
 <template>
-  <div class="movie-card shadow-md rounded-lg overflow-hidden bg-white hover:shadow-xl transition duration-300">
+  <div
+    class="movie-card shadow-md rounded-lg overflow-hidden bg-white hover:shadow-xl transition duration-300"
+  >
     <img
       :src="getPosterUrl(movie.poster_path)"
       :alt="movie.title"
@@ -21,15 +23,15 @@
 defineProps({
   movie: {
     type: Object,
-    required: true
-  }
-});
+    required: true,
+  },
+})
 
 const getPosterUrl = (path) => {
   return path
     ? `https://image.tmdb.org/t/p/w500${path}`
-    : 'https://via.placeholder.com/500x750?text=No+Image';
-};
+    : 'https://via.placeholder.com/500x750?text=No+Image'
+}
 </script>
 
 <style scoped>
