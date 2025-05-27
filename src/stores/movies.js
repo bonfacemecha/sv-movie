@@ -8,7 +8,7 @@ export const useMovieStore = defineStore('movies', {
     selectedMovie: null,
     loading: false,
     error: null,
-     movie: {},
+    movie: {},
     relatedMovies: [],
     currentPage: 1,
     totalPages: 0,
@@ -51,7 +51,7 @@ export const useMovieStore = defineStore('movies', {
       this.fetchPopular()
     },
     async fetchMovieDetails(id) {
-      this.loading = true      
+      this.loading = true
 
       try {
         const [movieRes, similarRes] = await Promise.all([
@@ -65,8 +65,38 @@ export const useMovieStore = defineStore('movies', {
         console.error('Error fetching movie details:', error)
       } finally {
         this.loading = false
-      }}
+      }
+    },
 
-    
+    // Inside actions in useMovieStore
+    async searchMovies(query) {
+      if (!query) {
+        // If search is cleared, fallback to popular
+        return this.fetchPopular()
+      }
+
+      this.loading = true
+      this.error = null
+
+      try {
+        const data = await api.get('/search/movie', {
+          query,
+          language: 'en-US',
+          page: 1,
+        })
+
+        this.movies = data.results
+        this.currentPage = data.page
+        this.totalPages = data.total_pages
+      } catch (error) {
+        this.error = 'Search failed. Please try again.'
+        console.error('Error searching movies:', error)
+      } finally {
+        this.loading = false
+      }
+    },
+    resetMovies() {
+      this.fetchPopular()
+    },
   },
 })
