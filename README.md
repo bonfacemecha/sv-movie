@@ -30,17 +30,20 @@ Screenshots
 ### Dashboard
 
 Here’s a quick look at the **Dashboard Page**, where you can explore the latest and most popular movies.
-![Movie Dashboard](https://github.com/bonfacemecha/sv-movie/tree/development/public/images/dashboard.png)
+![Movie Dashboard](https://github.com/bonfacemecha/sv-movie/raw/development/public/images/dashboard.png)
 
 ### Movie Details
 
-**Movie Details Page** allows you to dive deeper into each movie’s information, including ratings, plot, and cast.
-![Movie Details](https://github.com/bonfacemecha/sv-movie/tree/development/public/images/singlemv.png)
+The **Movie Details Page** allows you to dive deeper into each movie’s information, including ratings, plot, and cast.
+
+![Movie Details](https://github.com/bonfacemecha/sv-movie/raw/development/public/images/siglemv.png)
 
 ### Login 
 
-**Login  Page** allows you to login to the web using either password/email or Google Auth.
-![Login Page](https://github.com/bonfacemecha/sv-movie/tree/development/public/images/login.png)
+The **Login Page** allows you to log in to the web app using either your email/password or Google Authentication.
+![Login Page](https://github.com/bonfacemecha/sv-movie/raw/development/public/images/login.png)
+
+
 
 Project Setup
 -------------
@@ -53,12 +56,9 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 
 To get started, install the necessary dependencies:
 
-bash
-
-CopyEdit
-
-`npm install`
-
+ ```bash
+npm install
+```
 ### Firebase Setup
 
 You will need a Firebase project for Firebase Authentication to work. To integrate Firebase Auth, follow these steps:
@@ -73,17 +73,17 @@ You will need a Firebase project for Firebase Authentication to work. To integra
 
 3.  **Install Firebase SDK**:
 
-    bash
+```bash
 
-    CopyEdit
+npm install firebase
 
-    `npm install firebase`
+```
 
 4.  **Configure Firebase** in your app by creating a `firebase.js` file under the `src` folder with your Firebase project credentials:
 
 javascript
 
-CopyEdit
+```bash
 
 `import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -101,7 +101,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export { auth };`
-
+```
 1.  **Set up Firebase Auth methods** (like sign-in, sign-out, etc.) in your components.
 
 * * * * *
@@ -122,23 +122,19 @@ Your app will be available at `http://localhost:3000`.
 
 Once you're ready to deploy, build the app for production:
 
-bash
-
-CopyEdit
-
-`npm run build`
-
+```bash
+npm run build
+```
 This will create a minified version of your app in the `dist/` folder.
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 If you have unit tests, you can run them with:
 
-bash
 
-CopyEdit
-
-`npm run test:unit`
+```bash
+npm run test:unit
+```
 
 * * * * *
 
@@ -151,84 +147,12 @@ The app fetches movie data via a REST API (such as The Movie Database API or a c
 
 1.  **API Configuration**: Store your API key in `.env` for security:
 
-bash
 
-CopyEdit
 
-`VITE_API_KEY=your_api_key_here`
+```bash
+VITE_API_KEY=your_api_key_here`
+```
 
-1.  **API Service**: Create an API service file to manage fetching data from the API:
-
-javascript
-
-CopyEdit
-
-`// src/services/movieService.js
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'https://api.themoviedb.org/3',
-  params: {
-    api_key: import.meta.env.VITE_API_KEY
-  }
-});
-
-export const fetchMovies = async (page = 1) => {
-  try {
-    const response = await api.get('/movie/popular', {
-      params: { page }
-    });
-    return response.data.results;
-  } catch (error) {
-    console.error("Error fetching movies:", error);
-    return [];
-  }
-};`
-
-1.  **Movie Details API**: Similarly, you can fetch details for a specific movie:
-
-javascript
-
-CopyEdit
-
-`export const fetchMovieDetails = async (movieId) => {
-  try {
-    const response = await api.get(`/movie/${movieId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movie details:", error);
-    return null;
-  }
-};`
-
-* * * * *
-
-Project Structure
------------------
-
-The project is organized as follows:
-
-bash
-
-CopyEdit
-
-`src/
-├── assets/           # Images, icons, and other media
-├── components/       # Reusable components (Navbar, MovieCard, etc.)
-├── views/            # Different page views (Dashboard, MovieDetails, etc.)
-├── layouts/          # Layouts for different page structures (MainLayout, AuthLayout, etc.)
-├── store/            # Vuex or Pinia store for app state
-├── router/           # Vue Router setup for page navigation
-├── services/         # API integration and service functions (Movie API, Firebase, etc.)
-└── firebase/         # Firebase authentication and setup`
-
-### Layouts
-
-In the `layouts/` folder, you can organize the page structures for different types of pages (e.g., Auth pages and Main pages). Example:
-
--   **MainLayout.vue**: Used for pages like the Dashboard and Movie Details.
-
--   **AuthLayout.vue**: Used for Login/Sign-up pages to provide a different layout with minimal distractions.
 
 * * * * *
 

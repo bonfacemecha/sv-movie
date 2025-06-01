@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import MoviesView from '../views/MoviesView.vue'
 import RegisterView from '../views/auth/Register.vue'
 import LoginView from '../views/auth/Login.vue'
+import AboutView from '../views/AboutView.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import MovieDetail from '@/views/MovieDetail.vue'
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
@@ -18,6 +19,12 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: {requiresAuth: true,  layout: AuthenticatedLayout },
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView,
+      meta: { layout: GuestLayout },
     },
     {
       path: '/auth/register',
@@ -50,12 +57,7 @@ const router = createRouter({
       component: MovieDetail,
       meta: { requiresAuth: true, layout: AuthenticatedLayout },
     },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-      meta: { layout: GuestLayout },
-    },
+    
   ],
   scrollBehavior(to, from, savedPosition) {
     return { top: 0, behavior: 'smooth' }

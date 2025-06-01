@@ -1,4 +1,7 @@
 <!-- src/views/AboutUs.vue -->
+ <script setup>
+
+</script>
 
 <template>
   <div class="bg-gray-50 py-12">
@@ -58,11 +61,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "AboutUs",
-};
-</script>
 
 <style scoped>
 /* Custom Styling */
