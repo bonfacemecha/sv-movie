@@ -1,15 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
+// Views
 import HomeView from '../views/HomeView.vue'
 import MoviesView from '../views/MoviesView.vue'
 import RegisterView from '../views/auth/Register.vue'
 import LoginView from '../views/auth/Login.vue'
 import AboutView from '../views/AboutView.vue'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import MovieDetail from '@/views/MovieDetail.vue'
+import ResetPassword from '@/views/auth/ResetPassword.vue'
+
+// Layouts
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import ResetPassword from '@/views/auth/ResetPassword.vue'; 
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +21,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: {requiresAuth: true,  layout: AuthenticatedLayout },
+      meta: { requiresAuth: true, layout: AuthenticatedLayout },
     },
     {
       path: '/about',
@@ -38,13 +41,12 @@ const router = createRouter({
       component: LoginView,
       meta: { layout: GuestLayout },
     },
-      {
-    path: '/reset-password',
-    name: 'ResetPassword',
-    component: ResetPassword,
-          meta: { layout: GuestLayout },
-
-  },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPassword,
+      meta: { layout: GuestLayout },
+    },
     {
       path: '/movies',
       name: 'movies',
@@ -53,30 +55,34 @@ const router = createRouter({
     },
     {
       path: '/movie/:id',
-      name: 'MovieDetail',
+      name: 'movie-detail',
       component: MovieDetail,
       meta: { requiresAuth: true, layout: AuthenticatedLayout },
     },
-    
   ],
   scrollBehavior(to, from, savedPosition) {
     return { top: 0, behavior: 'smooth' }
   },
 })
 
+// Navigation Guard to handle authentication
 router.beforeEach((to, from, next) => {
   const auth = getAuth()
 
-  // Return a promise to ensure we wait for the authentication state check
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       if (to.meta.requiresAuth && !user) {
-        // If user is not authenticated, redirect to login
+        // If the user is not authenticated, redirect to login and store the target route
         next({ name: 'login', query: { redirect: to.fullPath } })
-        resolve() // Resolve the promise after redirecting
+        resolve()
       } else {
-        next() // Allow navigation
-        resolve() // Resolve the promise after allowing navigation
+        // If the user is authenticated, allow navigation
+        if (to.name === 'login' && from.name === null && to.query.redirect) {
+          // If coming directly from the login page with a `redirect` query, remove it after login
+          delete to.query.redirect
+        }
+        next()
+        resolve()
       }
     })
   })
