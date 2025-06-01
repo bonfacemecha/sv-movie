@@ -30,10 +30,17 @@ Screenshots
 ### Dashboard
 
 Here’s a quick look at the **Dashboard Page**, where you can explore the latest and most popular movies.
+![Movie Dashboard](./images/dashboard.png)
 
 ### Movie Details
 
 **Movie Details Page** allows you to dive deeper into each movie’s information, including ratings, plot, and cast.
+![Movie Details](./images/singlemv.png)
+
+### Login 
+
+**Login  Page** allows you to login to the web using either password/email or Google Auth.
+![Login Page](./images/login.png)
 
 Project Setup
 -------------

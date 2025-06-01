@@ -59,13 +59,6 @@ export const useMovieStore = defineStore('movies', {
       const pageFromUrl = parseInt(urlParams.get('page')) || 1
       this.currentPage = pageFromUrl
       this.fetchPopular()
-
-      this.$nextTick(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        })
-      })
     },
     async fetchMovieDetails(id) {
       this.loading = true
