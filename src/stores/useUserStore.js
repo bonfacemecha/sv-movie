@@ -12,7 +12,9 @@ export const useUserStore = defineStore('user', {
     },
     clearUser() {
       this.user = null
-    }
+    },
   },
+
+  
   persist: true,  // Optional: if you want to persist the user across sessions
 })

@@ -37,7 +37,7 @@ const login = async () => {
     // Attempt to sign in the user with the provided email and password
     await signInWithEmailAndPassword(getAuth(), trimmedEmail, trimmedPassword);
     // Redirect to the dashboard upon successful login or the page they were
-    const redirectTo = router.currentRoute.value.query.redirect || '/movies'; // Redirect to dashboard or previous page
+    const redirectTo = router.currentRoute.value.query.redirect || '/'; // Redirect to dashboard or previous page
     router.push(redirectTo);
   } catch (error) {
     // Set error message for display
@@ -46,7 +46,7 @@ const login = async () => {
     } else if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
       errorMessage.value = "Invalid email or password.";
     } else {
-      errorMessage.value = "Something went wrong, please try again.";
+      errorMessage.value = "Something went wrong, please try again. " +  error;
     }
   } finally {
     // Hide loading indicator after login attempt
@@ -68,7 +68,7 @@ const signInWithGoogle = async () => {
 </script>
 
 <template>
-  <section class="bg-gray-50 dark:bg-gray-900">
+  <section class="bg-gray-50 dark:bg-gray-900 items-center flex">
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
       <div class="flex flex-col justify-center">
         <a href="/" class="flex m mb-6 d:me-24">
@@ -81,7 +81,7 @@ const signInWithGoogle = async () => {
           At Savannah Tv, we bring you the best in cinematic experiences. From timeless classics to the latest blockbusters, explore a diverse range of movies that entertain, inspire, and transport you to different worlds.
         </p>
 
-        <a href="/movies"
+        <a href="/about"
           class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">
           Read more about our app
           <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -123,8 +123,8 @@ const signInWithGoogle = async () => {
               <div class="ms-3 text-sm">
                 <label for="remember" class="font-medium text-gray-500 dark:text-gray-400">Remember this device</label>
               </div>
-              <a href="#" class="ms-auto text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Lost
-                Password?</a>
+              <RouterLink to="'/reset-password'" class="ms-auto text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Lost
+                Password?</RouterLink>
             </div>
 
             <!-- Submit Button -->

@@ -38,8 +38,10 @@ onMounted(() => {
 })
 
 const getFirstName = (name) => {
-      return name.split(' ')[0];  // Take the first part of the name
-}
+  if (!name) return ''; 
+  
+  return name.split(' ')[0];
+  }
 </script>
 
 
@@ -83,7 +85,8 @@ const getFirstName = (name) => {
       <!--  Stats at a Glance -->
       <div class="">
         <div class="text mb-8">
-          Hi {{ getFirstName(user.displayName) }} 👋
+              <p v-if="user && user.displayName">Hi {{ getFirstName(user.displayName) }} 👋</p>
+
           <h1 class="text-2xl font-bold mb-4">Welcome Back</h1>
         </div>
 
