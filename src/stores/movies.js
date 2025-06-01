@@ -40,7 +40,17 @@ export const useMovieStore = defineStore('movies', {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page
         this.fetchPopular()
+
+        // Update the URL without reloading the page
         window.history.pushState({}, '', `?page=${page}`)
+
+        // Delay scroll to top to ensure content has been loaded
+        this.$nextTick(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          })
+        })
       }
     },
 
@@ -49,6 +59,13 @@ export const useMovieStore = defineStore('movies', {
       const pageFromUrl = parseInt(urlParams.get('page')) || 1
       this.currentPage = pageFromUrl
       this.fetchPopular()
+
+      this.$nextTick(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+      })
     },
     async fetchMovieDetails(id) {
       this.loading = true
