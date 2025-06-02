@@ -36,9 +36,7 @@ const login = async () => {
   try {
     // Attempt to sign in the user with the provided email and password
     await signInWithEmailAndPassword(getAuth(), trimmedEmail, trimmedPassword);
-    // Redirect to the dashboard upon successful login or the page they were
-    const redirectTo = router.currentRoute.value.query.redirect || '/'; // Redirect to dashboard or previous page
-    router.push(redirectTo);
+    router.push('/')
   } catch (error) {
     // Set error message for display
     if (error.code === "auth/invalid-email") {
@@ -46,7 +44,7 @@ const login = async () => {
     } else if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
       errorMessage.value = "Invalid email or password.";
     } else {
-      errorMessage.value = "Something went wrong, please try again. " +  error;
+      errorMessage.value = "Something went wrong, please try again.";
     }
   } finally {
     // Hide loading indicator after login attempt
@@ -59,7 +57,7 @@ const signInWithGoogle = async () => {
     const result = await signInWithPopup(getAuth(), provider);
     const user = result.user;
     alert("Signed in with Google: " + user.email);
-    router.push('/movies')
+    router.push('/')
 
   } catch (error) {
     errorMessage.value = error.message;
@@ -74,11 +72,14 @@ const signInWithGoogle = async () => {
         <a href="/" class="flex m mb-6 d:me-24">
           <img :src="'/logo.png'" class="h-14 me-3" alt="Logo" />
         </a>
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+        <h1
+          class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
           Explore Movies
         </h1>
         <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-          At Savannah Tv, we bring you the best in cinematic experiences. From timeless classics to the latest blockbusters, explore a diverse range of movies that entertain, inspire, and transport you to different worlds.
+          At Savannah Tv, we bring you the best in cinematic experiences. From timeless classics to the latest
+          blockbusters, explore a diverse range of movies that entertain, inspire, and transport you to different
+          worlds.
         </p>
 
         <a href="/about"
@@ -123,7 +124,8 @@ const signInWithGoogle = async () => {
               <div class="ms-3 text-sm">
                 <label for="remember" class="font-medium text-gray-500 dark:text-gray-400">Remember this device</label>
               </div>
-              <RouterLink to="'/reset-password'" class="ms-auto text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Lost
+              <RouterLink to="'/reset-password'"
+                class="ms-auto text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Lost
                 Password?</RouterLink>
             </div>
 

@@ -69,23 +69,21 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const auth = getAuth()
 
-  return new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
-      if (to.meta.requiresAuth && !user) {
-        // If the user is not authenticated, redirect to login and store the target route
-        next({ name: 'login', query: { redirect: to.fullPath } })
-        resolve()
+  onAuthStateChanged(auth, (user) => {
+    if (to.meta.requiresAuth && !user) {
+      // If the user is not authenticated, redirect to login
+      next({ name: 'login' })
+    } else {
+      // If the user is authenticated, allow navigation
+      if (to.name === 'login' && from.name === null) {
+        // Prevent routing to login page if already logged in
+        next({ name: 'home' })  // or whichever route you want to redirect to after login
       } else {
-        // If the user is authenticated, allow navigation
-        if (to.name === 'login' && from.name === null && to.query.redirect) {
-          // If coming directly from the login page with a `redirect` query, remove it after login
-          delete to.query.redirect
-        }
         next()
-        resolve()
       }
-    })
+    }
   })
 })
+
 
 export default router
