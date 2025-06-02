@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth"; // Firebase authentication functions
 import { useRouter } from "vue-router"; // for navigation
+import { useToast } from "vue-toastification"; 
 
 // Setup reactive variables
 const email = ref("");
@@ -11,6 +12,9 @@ const isLoading = ref(false); // for showing a loading state during the login pr
 
 // Create a router instance to handle redirection
 const router = useRouter();
+
+// Create a toast instance
+const toast = useToast();
 
 // Function to handle login
 const login = async () => {
@@ -22,11 +26,13 @@ const login = async () => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(trimmedEmail)) {
     errorMessage.value = "Please enter a valid email address.";
+    toast.error(errorMessage.value); // Show error toast
     return;
   }
 
   if (!trimmedPassword) {
     errorMessage.value = "Password cannot be empty.";
+    toast.error(errorMessage.value); // Show error toast
     return;
   }
 
@@ -36,6 +42,7 @@ const login = async () => {
   try {
     // Attempt to sign in the user with the provided email and password
     await signInWithEmailAndPassword(getAuth(), trimmedEmail, trimmedPassword);
+    toast.success("Login successful!"); // Show success toast
     router.push('/')
   } catch (error) {
     // Set error message for display
@@ -46,24 +53,27 @@ const login = async () => {
     } else {
       errorMessage.value = "Something went wrong, please try again.";
     }
+    toast.error(errorMessage.value); // Show error toast
   } finally {
     // Hide loading indicator after login attempt
     isLoading.value = false;
   }
 };
+
+// Function for Google sign-in
 const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(getAuth(), provider);
     const user = result.user;
-    alert("Signed in with Google: " + user.email);
-    router.push('/')
-
+    toast.success(`Signed in with Google: ${user.email}`); // Show success toast
+    router.push('/');
   } catch (error) {
-    errorMessage.value = error.message;
+    toast.error("Google sign-in failed. Please try again."); // Show error toast
   }
 };
 </script>
+
 
 <template>
   <section class="bg-gray-50 dark:bg-gray-900 items-center flex">
@@ -124,7 +134,7 @@ const signInWithGoogle = async () => {
               <div class="ms-3 text-sm">
                 <label for="remember" class="font-medium text-gray-500 dark:text-gray-400">Remember this device</label>
               </div>
-              <RouterLink to="'/reset-password'"
+              <RouterLink to="/auth/reset-password"
                 class="ms-auto text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Lost
                 Password?</RouterLink>
             </div>
