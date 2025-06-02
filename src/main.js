@@ -6,6 +6,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useUserStore } from './stores/useUserStore'
 import App from './App.vue'
 import router from './router'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -28,6 +30,10 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+const options = {
+    timeout: 3000,
+};
+app.use(Toast, options);
 
 const auth = getAuth()
 

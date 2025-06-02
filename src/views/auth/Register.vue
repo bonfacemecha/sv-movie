@@ -2,42 +2,68 @@
 import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"; // import firebase functions
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification"; // Import VueToast
 
-const router = useRouter()
+
+// Create a router instance
+const router = useRouter();
+
+// Create a toast instance
+const toast = useToast();
 
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 const errorMessage = ref("");
 
+// Register function
 const register = async () => {
   if (password.value !== confirmPassword.value) {
     errorMessage.value = "Passwords do not match!";
+    toast.error(errorMessage.value, {
+      position: "top-right",
+      timeout: 3000
+    });
     return;
   }
 
   try {
     await createUserWithEmailAndPassword(getAuth(), email.value, password.value);
-    alert("Registration successful!");
-    router.push('/movies')
+    toast.success("Registration successful!", {
+      position: "top-right",
+      timeout: 3000
+    });
+    router.push('/movies');
   } catch (error) {
     errorMessage.value = error.message;
+    toast.error(errorMessage.value, {
+      position: "top-right",
+      timeout: 3000
+    });
   }
 };
 
+// Sign in with Google function
 const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(getAuth(), provider);
     const user = result.user;
-    alert("Signed in with Google: " + user.email);
-    router.push('/movies')
-
+    toast.success(`Signed in with Google: ${user.email}`, {
+      position: "top-right",
+      timeout: 3000
+    });
+    router.push('/movies');
   } catch (error) {
     errorMessage.value = error.message;
+    toast.error(errorMessage.value, {
+      position: "top-right",
+      timeout: 3000
+    });
   }
 };
 </script>
+
 
 <template>
   <section class="bg-gray-50 dark:bg-gray-900 items-center flex">
